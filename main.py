@@ -52,7 +52,7 @@ def main():
 
     logging.debug("Starting capture device for {}".format(filename))
     cap = cv2.VideoCapture(str(filename))
-    proccesor = VideoProcessor(cap, max=30)
+    proccesor = VideoProcessor(cap)
     vdata = inspect_video(cap)
     logging.debug("vdata={}".format(vdata))
 

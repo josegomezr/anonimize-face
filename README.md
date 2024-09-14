@@ -1,0 +1,47 @@
+TBD: add more docs, me tired rn.
+
+
+Notes:
+
+Gaussian blur _can_ be reversed and it's not enough to anonymize a face.
+
+
+Usage
+-----
+
+Get your `venv` with dependencies:
+
+```bash
+python3 -m venv venv
+source ./venv/bin/activate
+pip install -r requirements.txt`
+```
+
+Then:
+
+```bash
+python main.py path/to/your/vid.mp4
+```
+
+Will generate the following files:
+    - `path/to/your/vid.overlay.mp4`: a %color% over black overlay
+    - `path/to/your/vid.bboxes.bin`: a pickled representation of the bounding boxes of the faces found in the video indexed by frame. Like:
+    ```python
+    [
+        [1, [(x1, y1, x2, y2)]], # one frame, one face
+        [3, [(x1, y1, x2, y2), (x1, y1, x2, y2)...]], # one frame, many faces
+    ]
+    ```
+
+Merging the overlay with the original video
+---
+
+```
+python main.py path/to/your/vid.mp4 # from before
+bash ffmpeg_merger.bash path/to/your/vid.mp4
+```
+
+Will generate `path/to/your/vid.merged.mp4` with the overlay generated before blended into the original video.
+
+Additionally the `ffmpeg_merger.bash` script applies a gaussian blur for after the overlay is applied to maximize blending and covering visible identifying features.
+
