@@ -18,22 +18,28 @@ class VideoProcessor:
     def work(self):
         vdata = inspect_video(self.cap)
 
-        self.logger.debug('Starting multi-processing task with {} FaceRecognitionTasks'.format(self.concurrency))
+        self.logger.debug(
+            "Starting multi-processing task with {} FaceRecognitionTasks".format(
+                self.concurrency
+            )
+        )
 
         detector = InsightFaceDetector()
         for w in range(self.concurrency):
-            FaceRecognitionTask(self.frames_queue, self.results_queue, detector=detector).start()
+            FaceRecognitionTask(
+                self.frames_queue, self.results_queue, detector=detector
+            ).start()
 
         for frame_num, frame in FrameIterator(self.cap, until=self.max):
-            self.logger.debug('Put frame {} in the queue'.format(frame_num))
+            self.logger.debug("Put frame {} in the queue".format(frame_num))
             self.frames_queue.put((frame_num, frame))
 
         # Add a poison pill for each consumer
-        self.logger.debug('Send poison pills')
+        self.logger.debug("Send poison pills")
         for i in range(self.concurrency):
             self.frames_queue.put(None)
 
-        self.logger.info('Waiting for results...')
+        self.logger.info("Waiting for results...")
         self.frames_queue.join()
 
         bounding_boxes = []

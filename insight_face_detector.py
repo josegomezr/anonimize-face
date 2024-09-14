@@ -1,8 +1,17 @@
+import numpy as np
+
+setattr(np, "int", int)
+
 from insightface.app import FaceAnalysis
+
 
 class InsightFaceDetector:
     def __init__(self):
-        self.app = FaceAnalysis(providers=['CUDAExecutionProvider', 'CPUExecutionProvider'], allowed_modules=['detection'], det_thresh=0.3)
+        self.app = FaceAnalysis(
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            allowed_modules=["detection"],
+            det_thresh=0.3,
+        )
         self.app.prepare(ctx_id=0)
 
     def find_faces(self, frame):

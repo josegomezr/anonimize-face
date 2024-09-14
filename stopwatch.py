@@ -12,13 +12,15 @@ class Stopwatch(ContextDecorator):
 
     def __enter__(self):
         self.start = time.monotonic()
-        self.logger.log(self.level, '{} - start'.format(self.msg))
+        self.logger.log(self.level, "{} - start".format(self.msg))
         return self
 
     def __exit__(self, *exc):
         self.end = time.monotonic()
         self.duration = self.end - self.start
-        self.logger.log(self.level, '{} - finished in {}'.format(self.msg, self.duration))
+        self.logger.log(
+            self.level, "{} - finished in {}".format(self.msg, self.duration)
+        )
 
         self.msg = None
         return False
