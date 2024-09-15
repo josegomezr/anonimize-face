@@ -1,3 +1,5 @@
+from base_detector import BaseDetector
+
 import numpy as np
 
 setattr(np, "int", int)
@@ -5,15 +7,16 @@ setattr(np, "int", int)
 from insightface.app import FaceAnalysis
 
 
-class InsightFaceDetector:
+class InsightFaceDetector(BaseDetector):
     def __init__(
         self,
         threshold=0.3,
     ):
+        super().__init__(threshold=threshold)
         self.app = FaceAnalysis(
             providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
             allowed_modules=["detection"],
-            det_thresh=0.3,
+            det_thresh=self.threshold,
         )
         self.app.prepare(ctx_id=0)
         self.cold = True

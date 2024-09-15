@@ -1,0 +1,25 @@
+[project]
+name = "anonimize-video"
+version = "0.1.0"
+description = "I have to learn how to fill up these pieces of data."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "insightface==0.7.3",
+    "onnx==1.16.2",
+    "onnxruntime==1.19.2",
+    "numpy==2.1.1",
+    "opencv-python==4.10.0.84",
+]
+
+[project.optional-dependencies]
+cuda = [
+    "onnxruntime-gpu==1.19.2",
+    "nvidia-cudnn-cu12==9.1.0.70",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "black",
+    "ipdb",
+]

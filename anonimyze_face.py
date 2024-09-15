@@ -95,6 +95,12 @@ def parse_args():
         help="skip face detection if bbox exists",
         default=False,
     )
+    parser.add_argument(
+        "--detector",
+        type=str,
+        help="Detector [only 'insight-face' or 'yunet' are supported]",
+        default="insight-face",
+    )
 
     args = parser.parse_args()
     return args
@@ -112,7 +118,7 @@ def main():
 
         vdata = inspect_video(cap)
         logging.info("vdata={}".format(vdata))
-        processor = VideoProcessor(cap)
+        processor = VideoProcessor(cap, detector=args.detector)
 
         if bbox_filename.exists() and args.use_existing_bbox:
             logging.info("Using previous frames from {}".format(bbox_filename))
@@ -123,6 +129,10 @@ def main():
             bounding_boxes = []
             with Stopwatch("VideoProcessor"):
                 bounding_boxes = processor.work()
+
+            if len(bounding_boxes) == 0:
+                logging.info("No faces detected, skipping")
+                break
 
             logging.info("Dumping bounding boxes to {}".format(bbox_filename))
             dump_state(bbox_filename, bounding_boxes)
