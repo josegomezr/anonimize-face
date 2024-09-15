@@ -11,9 +11,7 @@ class InsightFaceDetector:
         threshold=0.3,
     ):
         self.app = FaceAnalysis(
-            providers=["CPUExecutionProvider"],
-            # providers=["CUDAExecutionProvider"],
-            # providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
             allowed_modules=["detection"],
             det_thresh=0.3,
         )

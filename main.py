@@ -50,9 +50,6 @@ def main():
     os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
     import sys
-    import multiprocessing
-
-    multiprocessing.set_start_method("spawn")
 
     filename = Path(sys.argv[1])
     dest = str(filename.with_stem("{}.overlay".format(filename.stem)))
@@ -60,9 +57,9 @@ def main():
     logging.debug("Starting capture device for {}".format(filename))
     cap = cv2.VideoCapture(str(filename))
 
-    proccesor = VideoProcessor(cap, max=100)
+    proccesor = VideoProcessor(cap)
     vdata = inspect_video(cap)
-    logging.debug("vdata={}".format(vdata))
+    logging.info("vdata={}".format(vdata))
 
     bounding_boxes = []
     with Stopwatch("VideoProcessor"):

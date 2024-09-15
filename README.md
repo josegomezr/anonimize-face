@@ -1,9 +1,16 @@
-TBD: add more docs, me tired rn.
+Anonymize Face
+====
+
+Anonymize faces in videos.
 
 
-Notes:
+Gaussian blur is a common technique to blur people's faces, however given the appropriate conditions ([0]) **it _can_ be reversed** defeating the purpose of it.
 
-Gaussian blur _can_ be reversed and it's not enough to anonymize a face.
+This toolkit uses [deepinsight/insightface][deepinsight/insightface], one of the most accurate DNN Models as of today for facial recognition tasks.
+
+[deepinsight/insightface]: https://github.com/deepinsight/insightface
+
+[0]: https://www.sciencedirect.com/science/article/abs/pii/S0734189X87801536
 
 
 Usage
@@ -14,8 +21,24 @@ Get your `venv` with dependencies:
 ```bash
 python3 -m venv venv
 source ./venv/bin/activate
-pip install -r requirements.txt`
+pip install -r requirements.txt
 ```
+
+### CUDA ONLY
+
+If you have CUDA-capable card install the cuda requirements with:
+
+```bash
+pip install -r requirements-cuda.txt
+```
+
+And make sure to have the cuda libs in your `LD_LIBRARY_PATH`:
+
+```bash
+eval $(python generate_cuda_ld_path.py)
+```
+
+### / CUDA ONLY
 
 Then:
 

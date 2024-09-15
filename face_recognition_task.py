@@ -13,7 +13,7 @@ from dataclasses import dataclass
 import numpy as np
 
 
-class FaceRecognitionTask:
+class FaceRecognitionTask(Thread):
     def __init__(self, task_queue, result_queue, detector=None, logger=None, lock=None):
         super().__init__()
         self.logger = logger or logging.getLogger(__name__)
@@ -79,7 +79,9 @@ class BatchedProcess(FaceRecognitionTask, Process):
         self.task_queue.task_done()
 
 
-class WithThreads(FaceRecognitionTask, Thread):
+class WithThreads(
+    FaceRecognitionTask,
+):
     pass
 
 
