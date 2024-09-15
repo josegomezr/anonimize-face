@@ -11,7 +11,7 @@ from utils import dump_state, inspect_video, draw_on_faces
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(levelname)s: %(asctime)s - %(name)s[%(processName)s|%(filename)s:%(lineno)d] %(message)s",
+    format="%(levelname)s: %(asctime)s - %(name)s[%(processName)s#%(thread)x|%(filename)s:%(lineno)d] %(message)s",
 )
 
 
@@ -46,11 +46,13 @@ def write_overlay(dest, vdata, bounding_boxes, context_window_size=15):
 
 def main():
     import os
-    os.environ['NO_ALBUMENTATIONS_UPDATE'] = '1'
+
+    os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
     import sys
     import multiprocessing
-    multiprocessing.set_start_method('spawn')
+
+    multiprocessing.set_start_method("spawn")
 
     filename = Path(sys.argv[1])
     dest = str(filename.with_stem("{}.overlay".format(filename.stem)))
@@ -58,13 +60,13 @@ def main():
     logging.debug("Starting capture device for {}".format(filename))
     cap = cv2.VideoCapture(str(filename))
 
-    proccesor = VideoProcessor(cap)
+    proccesor = VideoProcessor(cap, max=100)
     vdata = inspect_video(cap)
     logging.debug("vdata={}".format(vdata))
 
     bounding_boxes = []
     with Stopwatch("VideoProcessor"):
-        bounding_boxes = proccesor.work(strategy='threaded')
+        bounding_boxes = proccesor.work()
 
     dump_state(filename.with_suffix(".bboxes.bin"), bounding_boxes)
 

@@ -6,11 +6,14 @@ from insightface.app import FaceAnalysis
 
 
 class InsightFaceDetector:
-    def __init__(self, threshold=0.3, ):
+    def __init__(
+        self,
+        threshold=0.3,
+    ):
         self.app = FaceAnalysis(
-            # providers=["CPUExecutionProvider"],
+            providers=["CPUExecutionProvider"],
             # providers=["CUDAExecutionProvider"],
-            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+            # providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
             allowed_modules=["detection"],
             det_thresh=0.3,
         )
@@ -30,5 +33,5 @@ class InsightFaceDetector:
         if not self.cold:
             return
         self.cold = True
-        frame = np.random.randint(0, 255, (480, 640, 3)).astype('uint8')
+        frame = np.random.randint(0, 255, (480, 640, 3)).astype("uint8")
         self.find_faces(frame)
