@@ -45,20 +45,26 @@ def write_overlay(dest, vdata, bounding_boxes, context_window_size=15):
 
 
 def main():
+    import os
+    os.environ['NO_ALBUMENTATIONS_UPDATE'] = '1'
+
     import sys
+    import multiprocessing
+    multiprocessing.set_start_method('spawn')
 
     filename = Path(sys.argv[1])
     dest = str(filename.with_stem("{}.overlay".format(filename.stem)))
 
     logging.debug("Starting capture device for {}".format(filename))
     cap = cv2.VideoCapture(str(filename))
+
     proccesor = VideoProcessor(cap)
     vdata = inspect_video(cap)
     logging.debug("vdata={}".format(vdata))
 
     bounding_boxes = []
     with Stopwatch("VideoProcessor"):
-        bounding_boxes = proccesor.work()
+        bounding_boxes = proccesor.work(strategy='threaded')
 
     dump_state(filename.with_suffix(".bboxes.bin"), bounding_boxes)
 
