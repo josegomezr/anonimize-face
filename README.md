@@ -43,7 +43,9 @@ eval $(python generate_cuda_ld_path.py)
 Then:
 
 ```bash
-python main.py path/to/your/vid.mp4
+./anonymize-face.py -h # help
+
+./anonymize-face.py path/to/your/vid.mp4
 ```
 
 Will generate the following files:
@@ -59,12 +61,20 @@ Will generate the following files:
 Merging the overlay with the original video
 ---
 
+If audio is not needed, you can use:
+
 ```
-python main.py path/to/your/vid.mp4 # from before
-bash ffmpeg_merger.bash path/to/your/vid.mp4
+./anonymize-face.py --write-merged path/to/your/vid.mp4
 ```
 
-Will generate `path/to/your/vid.merged.mp4` with the overlay generated before blended into the original video.
+This will generate `path/to/your/vid.merged.mp4` with the overlay generated before blended into the original video.
+
+Else, use `ffmpeg_merger.bash` to preserve the original audio.
+
+```
+./anonymize-face.py path/to/your/vid.mp4 # from before
+bash ffmpeg_merger.bash path/to/your/vid.mp4
+```
 
 Additionally the `ffmpeg_merger.bash` script applies a gaussian blur for after the overlay is applied to maximize blending and covering visible identifying features.
 

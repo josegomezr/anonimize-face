@@ -32,7 +32,10 @@ class VideoProcessor:
         bounding_boxes.sort(key=lambda x: x[0])
         return bounding_boxes
 
-    def tpe_work(self):
+    def frames(self):
+        return FrameIterator(self.cap, until=self.max)
+
+    def perform_face_recognition(self):
         detector = InsightFaceDetector()
         detector.warmup()
 
@@ -41,7 +44,7 @@ class VideoProcessor:
             logging.info("Scheduling work")
             futures = [
                 self.pool.submit(self.process_frame, detector, *item)
-                for item in FrameIterator(self.cap, until=self.max)
+                for item in self.frames()
             ]
             logging.info("Processing...")
             for future in as_completed(futures):
@@ -76,11 +79,11 @@ class VideoProcessor:
                 )
             )
 
-            self.tpe_work()
+            self.perform_face_recognition()
 
             # Add a poison pill for each consumer
             self.logger.debug("Send poison pills")
-            
+
             self.frames_queue.join()
 
             return self.post_work()
