@@ -49,9 +49,11 @@ Then:
 ```
 
 Will generate the following files:
-    - `path/to/your/vid.overlay.mp4`: a %color% over black overlay
-    - `path/to/your/vid.bboxes.bin`: a pickled representation of the bounding boxes of the faces found in the video indexed by frame. Like:
+
+- `path/to/your/vid.overlay.mp4`: a %color% over black overlay
+- `path/to/your/vid.bboxes.bin`: a pickled representation of the bounding boxes of the faces found in the video indexed by frame. Like:  
     ```python
+    bboxes : Array[Array[frame_num: int, faces: Array[int, int, int, int]]
     [
         [1, [(x1, y1, x2, y2)]], # one frame, one face
         [3, [(x1, y1, x2, y2), (x1, y1, x2, y2)...]], # one frame, many faces
